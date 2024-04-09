@@ -1,4 +1,5 @@
 using MongoDB.Driver;
+using Todo_Api.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,8 @@ IConfiguration configuration = new ConfigurationBuilder()
 var mongoclient = new MongoClient(configuration.GetConnectionString("mongoDB"));
 builder.Services.AddSingleton<IMongoClient>(mongoclient);
 //Connect MongoDb
+
+builder.Services.AddTransient<ITaskRepository, TaskRepository>();
 
 
 var app = builder.Build();
