@@ -6,24 +6,24 @@ using Todo_Api.Repositories;
 
 namespace Todo_Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Todos/")]
     [ApiController]
-    public class TasksController : ControllerBase
+    public class TodosController : ControllerBase
     {
         private readonly ITaskRepository _taskRepository;
 
-        public TasksController(ITaskRepository taskRepository)
+        public TodosController(ITaskRepository taskRepository)
         {
             _taskRepository = taskRepository;
         }
 
-        [HttpPost()]
+        [HttpPost("Create")]
         public async Task<IActionResult> Create(Todo todo)
         {
             var id = _taskRepository.Create(todo);
             return new JsonResult(id.ToString());
         }
-        [HttpGet("Todo/{id}")]
+        [HttpGet("GetTodo/{id}")]
         public async Task<IActionResult> GetById(string id)
         {
             var todo = await _taskRepository.GetById(id);
@@ -31,18 +31,26 @@ namespace Todo_Api.Controllers
 
             return new JsonResult(todo);
         }
-        [HttpGet()]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll()
         {
             var todos =await _taskRepository.GetAll();
             return new JsonResult(todos);
         }
 
-        [HttpPut()]
+        [HttpPut("Update")]
         public async Task<IActionResult> Update(Todo todo)
         {
             var newTodo = await _taskRepository.Update(todo.Id, todo);
             return new JsonResult(newTodo);
         }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await _taskRepository.Delete(id);
+            return new JsonResult("success");
+        }
+        
     }
 }
