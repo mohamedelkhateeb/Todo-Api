@@ -20,8 +20,8 @@ namespace Todo_Api.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> Create(Todo todo)
         {
-            var id = _taskRepository.Create(todo);
-            return new JsonResult(id.ToString());
+            await _taskRepository.Create(todo);
+            return new JsonResult(todo);
         }
         [HttpGet("GetTodo/{id}")]
         public async Task<IActionResult> GetById(string id)
